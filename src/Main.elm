@@ -4,6 +4,7 @@ import Browser
 import Html exposing (Html, text, div, h1, img, form, label, input, p)
 import Html.Attributes exposing (src, class)
 import Html.Events exposing (onInput)
+import Round exposing (round)
 
 
 ---- MODEL ----
@@ -50,7 +51,7 @@ view model =
           ]
         ],
     div [] [
-            p [] [text ("Tonnes " ++ String.fromFloat model.tonnage)]
+            p [] [text ("Tonnes " ++ (Round.round 2 model.tonnage))]
             ]        
         ]
 
