@@ -50,7 +50,7 @@ view model =
           ]
         ],
     div [] [
-            p [] [text (String.fromFloat model.tonnage)]
+            p [] [text ("Tonnes " ++ String.fromFloat model.tonnage)]
             ]        
         ]
 
