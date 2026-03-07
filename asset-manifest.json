@@ -1,0 +1,15 @@
+{
+  "main.css": "/mto_tonnage_formatter/static/css/main.0af5c45f.chunk.css",
+  "main.js": "/mto_tonnage_formatter/static/js/main.fb2cb3f3.chunk.js",
+  "main.js.map": "/mto_tonnage_formatter/static/js/main.fb2cb3f3.chunk.js.map",
+  "runtime~main.js": "/mto_tonnage_formatter/static/js/runtime~main.d3a63a0c.js",
+  "runtime~main.js.map": "/mto_tonnage_formatter/static/js/runtime~main.d3a63a0c.js.map",
+  "vendors~main.js": "/mto_tonnage_formatter/static/js/vendors~main.ded87515.chunk.js",
+  "vendors~main.js.map": "/mto_tonnage_formatter/static/js/vendors~main.ded87515.chunk.js.map",
+  "./service-worker.js": "/mto_tonnage_formatter/./service-worker.js",
+  "favicon.ico": "/mto_tonnage_formatter/favicon.ico",
+  "index.html": "/mto_tonnage_formatter/index.html",
+  "logo.svg": "/mto_tonnage_formatter/logo.svg",
+  "manifest.json": "/mto_tonnage_formatter/manifest.json",
+  "precache-manifest.7abb3446a5d182a4754205c0b79280c5.js": "/mto_tonnage_formatter/precache-manifest.7abb3446a5d182a4754205c0b79280c5.js"
+}
