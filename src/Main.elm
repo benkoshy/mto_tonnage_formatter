@@ -80,7 +80,7 @@ view model =
             ]
         , div [ class "my-5 row" ]
             [ input [ classList [("form-control", True), (isValid model, True)] , value (formatResult model) ] [] 
-            , p [] [ small [ class "text-muted" ] [ text "CTRL + A (to select all) and then CTRL + C (to copy)" ] ]
+            , p [] [ small [ class "text-muted" ] [ text "CTRL + A (to select all) and then CTRL + C (to copy) " ] ]
             ]
         ]
 
