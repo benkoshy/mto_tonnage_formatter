@@ -71,7 +71,11 @@ view model =
         , form [ src "/logo.svg" ]
             [ div [ class "my-5 row" ]
                 [ div [ class "col-4" ] [ text "Is Addendum?"  ]
-                , div [ class "col-8" ] [ input [ type_ "checkbox", class "form-check-input", onClick Addendum ] [text "addendum"] ]
+                , div [ class "col-8" ] [  label
+        [ class "form-check-label" ]
+        [ input [ class "form-check-input mr-6", type_ "checkbox", onClick Addendum ] []
+        , text " Is Addendum?"
+        ] ]
                 ]
             , div [ class "my-5 row" ]
                 [ div [ class "col-4" ] [ label [ class "form-label" ] [ text "Tonnage" ] ]
@@ -106,9 +110,18 @@ view model =
         ]
 
 
+addendumString : Bool -> String
+addendumString isAddendum = if isAddendum then
+                            "(ADDENDUM) "
+                          else
+                            ""
+
+
+
+
 formatResult : Model -> String
 formatResult model =
-    Round.round 2 model.tonnage ++ " tonnes " ++ "(" ++ model.overall ++ ")" ++ ", Link: " ++ model.link ++ ", Live Link: " ++ model.live_link 
+    Round.round 2 model.tonnage ++ " tonnes " ++ (addendumString model.addendum) ++ "(" ++ model.overall ++ ")" ++ ", Link: " ++ model.link ++ ", Live Link: " ++ model.live_link 
 
 isValid : Model -> String
 isValid model =
