@@ -2,8 +2,8 @@ module Main exposing (..)
 
 import Browser
 import Html exposing (Html, div, form, h1, img, input, label, p, small, text)
-import Html.Attributes exposing (class, src, value, classList)
-import Html.Events exposing (onInput)
+import Html.Attributes exposing (class, src, value, classList, type_)
+import Html.Events exposing (onInput, onClick)
 import Round exposing (round)
 
 
@@ -15,12 +15,14 @@ type alias Model =
     { tonnage : Float
     , overall : String
     , link : String
+    , live_link : String
+    , addendum : Bool
     }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( { tonnage = 0, overall = "overall", link = "" }, Cmd.none )
+    ( { tonnage = 0, overall = "overall", link = "", live_link = "", addendum = False}, Cmd.none )
 
 
 
@@ -32,6 +34,8 @@ type Msg
     | Tonnage String
     | Overall String
     | Link String
+    | LiveLink String
+    | Addendum
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -49,6 +53,12 @@ update msg model =
         Link link ->
             ( { model | link = link }, Cmd.none )
 
+        LiveLink live_link ->
+            ( { model | live_link = live_link }, Cmd.none )
+
+        Addendum ->
+            ( { model | addendum = not model.addendum }, Cmd.none )
+
 
 
 ---- VIEW ----
@@ -60,6 +70,10 @@ view model =
         [ h1 [] [ text "Material Take Off Formatter" ]
         , form [ src "/logo.svg" ]
             [ div [ class "my-5 row" ]
+                [ div [ class "col-4" ] [ text "Is Addendum?"  ]
+                , div [ class "col-8" ] [ input [ type_ "checkbox", class "form-check-input", onClick Addendum ] [text "addendum"] ]
+                ]
+            , div [ class "my-5 row" ]
                 [ div [ class "col-4" ] [ label [ class "form-label" ] [ text "Tonnage" ] ]
                 , div [ class "col-8" ] [ input [ class "form-control", onInput Tonnage ] [] ]
                 ]
@@ -71,10 +85,17 @@ view model =
                     ]
                 ]
             , div [ class "my-5 row" ]
-                [ div [ class "col-4" ] [ label [ class "form-label" ] [ text "Link" ] ]
+                [ div [ class "col-4" ] [ label [ class "form-label" ] [ text "Google Drive Link" ] ]
                 , div [ class "col-8" ]
                     [ input [ class "form-control", onInput Link ] []
                     , p [] [ small [ class "text-muted" ] [ text "Carefully paste the Google Drive link" ] ]
+                    ]
+                ]
+            , div [ class "my-5 row" ]
+                [ div [ class "col-4" ] [ label [ class "form-label" ] [ text "Live Link" ] ]
+                , div [ class "col-8" ]
+                    [ input [ class "form-control", onInput LiveLink ] []
+                    , p [] [ small [ class "text-muted" ] [ text "Live Link" ] ]
                     ]
                 ]
             ]
@@ -87,11 +108,11 @@ view model =
 
 formatResult : Model -> String
 formatResult model =
-    "Tonnes: " ++ Round.round 2 model.tonnage ++ " (" ++ model.overall ++ ")" ++ ", Link: " ++ model.link
+    Round.round 2 model.tonnage ++ " tonnes " ++ "(" ++ model.overall ++ ")" ++ ", Link: " ++ model.link ++ ", Live Link: " ++ model.live_link 
 
 isValid : Model -> String
 isValid model =
-    if model.tonnage > 0 && (not (String.isEmpty (model.overall))) && (not (String.isEmpty (model.link)))  then "is-valid"
+    if model.tonnage > 0 && (not (String.isEmpty (model.overall))) && (not (String.isEmpty (model.link))) && (not (String.isEmpty (model.live_link)))  then "is-valid"
     else 
         "is-invalid"
     
