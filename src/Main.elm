@@ -2,8 +2,8 @@ module Main exposing (..)
 
 import Browser
 import Html exposing (Html, div, form, h1, img, input, label, p, small, text)
-import Html.Attributes exposing (class, src, value, classList, type_)
-import Html.Events exposing (onInput, onClick)
+import Html.Attributes exposing (class, classList, src, type_, value)
+import Html.Events exposing (onClick, onInput)
 import Round exposing (round)
 
 
@@ -22,7 +22,7 @@ type alias Model =
 
 init : ( Model, Cmd Msg )
 init =
-    ( { tonnage = 0, overall = "overall", link = "", live_link = "", addendum = False}, Cmd.none )
+    ( { tonnage = 0, overall = "overall", link = "", live_link = "", addendum = False }, Cmd.none )
 
 
 
@@ -70,12 +70,15 @@ view model =
         [ h1 [] [ text "Material Take Off Formatter" ]
         , form [ src "/logo.svg" ]
             [ div [ class "my-5 row" ]
-                [ div [ class "col-4" ] [ text "Is Addendum?"  ]
-                , div [ class "col-8" ] [  label
-        [ class "form-check-label" ]
-        [ input [ class "form-check-input mr-6", type_ "checkbox", onClick Addendum ] []
-        , text " Is Addendum?"
-        ] ]
+                [ div [ class "col-4" ] [ text "Is Addendum?" ]
+                , div [ class "col-8" ]
+                    [ label
+                        [ class "form-check-label" ]
+                        [ input [ class "form-check-input mr-6", type_ "checkbox", onClick Addendum ] []
+                        , text " Is Addendum?"
+                        ]
+                    , p [] [ small [ class "text-muted" ] [ text "(If it's an addendum different pricing applies)" ] ]
+                    ]
                 ]
             , div [ class "my-5 row" ]
                 [ div [ class "col-4" ] [ label [ class "form-label" ] [ text "Tonnage" ] ]
@@ -104,31 +107,34 @@ view model =
                 ]
             ]
         , div [ class "my-5 row" ]
-            [ input [ classList [("form-control", True), (isValid model, True)] , value (formatResult model) ] [] 
+            [ input [ classList [ ( "form-control", True ), ( isValid model, True ) ], value (formatResult model) ] []
             , p [] [ small [ class "text-muted" ] [ text "CTRL + A (to select all) and then CTRL + C (to copy) " ] ]
             ]
         ]
 
 
 addendumString : Bool -> String
-addendumString isAddendum = if isAddendum then
-                            "(ADDENDUM) "
-                          else
-                            ""
+addendumString isAddendum =
+    if isAddendum then
+        "(ADDENDUM) "
 
-
+    else
+        ""
 
 
 formatResult : Model -> String
 formatResult model =
-    Round.round 2 model.tonnage ++ " tonnes " ++ (addendumString model.addendum) ++ "(" ++ model.overall ++ ")" ++ ", Link: " ++ model.link ++ ", Live Link: " ++ model.live_link 
+    Round.round 2 model.tonnage ++ " tonnes " ++ addendumString model.addendum ++ "(" ++ model.overall ++ ")" ++ ", Link: " ++ model.link ++ ", Live Link: " ++ model.live_link
+
 
 isValid : Model -> String
 isValid model =
-    if model.tonnage > 0 && (not (String.isEmpty (model.overall))) && (not (String.isEmpty (model.link))) && (not (String.isEmpty (model.live_link)))  then "is-valid"
-    else 
+    if model.tonnage > 0 && not (String.isEmpty model.overall) && not (String.isEmpty model.link) && not (String.isEmpty model.live_link) then
+        "is-valid"
+
+    else
         "is-invalid"
-    
+
 
 
 ---- PROGRAM ----
