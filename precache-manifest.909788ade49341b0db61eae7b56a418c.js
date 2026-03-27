@@ -4,7 +4,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/mto_tonnage_formatter/favicon.ico"
   },
   {
-    "revision": "ee2ebb9ac7e89c587b4b432401bae20b",
+    "revision": "804dc881c36b4e26e7bad568a689b00b",
     "url": "/mto_tonnage_formatter/index.html"
   },
   {
@@ -16,12 +16,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/mto_tonnage_formatter/manifest.json"
   },
   {
-    "revision": "2e0739d3c08d35296626",
+    "revision": "1de53269124e5eba0639",
     "url": "/mto_tonnage_formatter/static/css/main.0af5c45f.chunk.css"
   },
   {
-    "revision": "2e0739d3c08d35296626",
-    "url": "/mto_tonnage_formatter/static/js/main.2e0739d3.chunk.js"
+    "revision": "1de53269124e5eba0639",
+    "url": "/mto_tonnage_formatter/static/js/main.1de53269.chunk.js"
   },
   {
     "revision": "d3a63a0cdbfc3375ded6",
