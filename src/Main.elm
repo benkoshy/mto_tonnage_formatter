@@ -1,7 +1,7 @@
 module Main exposing (..)
 
 import Browser
-import Html exposing (Html, div, form, h1, img, input, label, p, small, text)
+import Html exposing (Html, div, form, h1, h5, img, input, label, p, small, text)
 import Html.Attributes exposing (class, classList, src, type_, value)
 import Html.Events exposing (onClick, onInput)
 import Round exposing (round)
@@ -106,9 +106,16 @@ view model =
                     ]
                 ]
             ]
-        , div [ class "my-5 row" ]
-            [ input [ classList [ ( "form-control", True ), ( isValid model, True ) ], value (formatResult model) ] []
+        , 
+            div [ class "my-5" ]
+            [ h5 [class "text-start my-2"] [text "Status Link"],
+              input [ classList [ ( "form-control", True ), ( isValid model, True ) ], value (formatResult model) ] []
             , p [] [ small [ class "text-muted" ] [ text "CTRL + A (to select all) and then CTRL + C (to copy) " ] ]
+            ]
+        , div [ class "my-5" ]
+            [ h5 [class "text-start my-2"] [text "Line Item / Invoice Link"],
+              input [ classList [ ( "form-control", True ), ( isValid model, True ) ], value (formatLineItemResult model) ] []
+            , p [] [ small [ class "text-muted" ] [ text "This is for invoicing purposes: show only the report  without the live link." ] ]
             ]
         ]
 
@@ -125,6 +132,11 @@ addendumString isAddendum =
 formatResult : Model -> String
 formatResult model =
     Round.round 2 model.tonnage ++ " tonnes " ++ addendumString model.addendum ++ "(" ++ model.overall ++ ")" ++ ", Link: " ++ model.link ++ ", Live Link: " ++ model.live_link
+
+
+formatLineItemResult : Model -> String
+formatLineItemResult model =
+    Round.round 2 model.tonnage ++ " tonnes " ++ addendumString model.addendum ++ "(" ++ model.overall ++ ")" ++ ", Link: " ++ model.link 
 
 
 isValid : Model -> String
