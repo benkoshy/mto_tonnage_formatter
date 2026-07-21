@@ -12,7 +12,7 @@ import Round exposing (round)
 
 
 type alias Model =
-    { tonnage : Float
+    { weight_in_kg : Float
     , overall : String
     , link : String
     , live_link : String
@@ -22,7 +22,7 @@ type alias Model =
 
 init : ( Model, Cmd Msg )
 init =
-    ( { tonnage = 0, overall = "overall", link = "", live_link = "", addendum = False }, Cmd.none )
+    ( { weight_in_kg = 0, overall = "overall", link = "", live_link = "", addendum = False }, Cmd.none )
 
 
 
@@ -45,7 +45,7 @@ update msg model =
             ( model, Cmd.none )
 
         Tonnage tonnes ->
-            ( { model | tonnage = Result.withDefault 0 (String.toFloat tonnes |> Result.fromMaybe "invalid") }, Cmd.none )
+            ( { model | weight_in_kg = Result.withDefault 0 (String.toFloat tonnes |> Result.fromMaybe "invalid") }, Cmd.none )
 
         Overall overall ->
             ( { model | overall = overall }, Cmd.none )
@@ -66,6 +66,15 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
+    let
+        invalidKgsWarning = if isValidTonnage(model.weight_in_kg) then
+                            Html.text ""
+                        else
+                            p [] [ small [ class "text-danger" ] [ text ("Check whether you are entering weight in kgs (not tonnes) " ++  String.fromFloat(model.weight_in_kg)) ] ]
+
+        
+    in
+
     div []
         [ h1 [] [ text "Material Take Off Formatter" ]
         , form [ src "/logo.svg" ]
@@ -81,8 +90,9 @@ view model =
                     ]
                 ]
             , div [ class "my-5 row" ]
-                [ div [ class "col-4" ] [ label [ class "form-label" ] [ text "Tonnage" ] ]
-                , div [ class "col-8" ] [ input [ class "form-control", onInput Tonnage ] [] ]
+                [ div [ class "col-4" ] [ label [ class "form-label" ] [ text "Weight in KGs" ] ]
+                , div [ class "col-8" ] [ input [ classList [ ( "form-control", True ), ( "is-valid", isValidTonnage(model.weight_in_kg)), ( "is-invalid", not (isValidTonnage(model.weight_in_kg)))    ], onInput Tonnage ] [] ]                
+                , invalidKgsWarning
                 ]
             , div [ class "my-5 row" ]
                 [ div [ class "col-4" ] [ label [ class "form-label" ] [ text "Overall" ] ]
@@ -128,20 +138,33 @@ addendumString isAddendum =
     else
         ""
 
+kgs_to_tonnes: Float -> Float
+kgs_to_tonnes kgs = 
+    kgs / 1000
+
+
+isValidTonnage: Float -> Bool
+isValidTonnage kgs = if kgs > 1000 then
+                        True
+                    else
+                        False
+
+    
+
 
 formatResult : Model -> String
 formatResult model =
-    Round.round 2 model.tonnage ++ " tonnes " ++ addendumString model.addendum ++ "(" ++ model.overall ++ ")" ++ ", Link: " ++ model.link ++ ", Live Link: " ++ model.live_link
+    Round.round 2 (kgs_to_tonnes model.weight_in_kg) ++ " tonnes " ++ addendumString model.addendum ++ "(" ++ model.overall ++ ")" ++ ", Link: " ++ model.link ++ ", Live Link: " ++ model.live_link
 
 
 formatLineItemResult : Model -> String
 formatLineItemResult model =
-    Round.round 2 model.tonnage ++ " tonnes " ++ addendumString model.addendum ++ "(" ++ model.overall ++ ")" ++ ", Link: " ++ model.link 
+    Round.round 2 (kgs_to_tonnes model.weight_in_kg) ++ " tonnes " ++ addendumString model.addendum ++ "(" ++ model.overall ++ ")" ++ ", Link: " ++ model.link 
 
 
 isValid : Model -> String
 isValid model =
-    if model.tonnage > 0 && not (String.isEmpty model.overall) && not (String.isEmpty model.link) && not (String.isEmpty model.live_link) then
+    if model.weight_in_kg > 0 && not (String.isEmpty model.overall) && not (String.isEmpty model.link) && not (String.isEmpty model.live_link) then
         "is-valid"
 
     else
