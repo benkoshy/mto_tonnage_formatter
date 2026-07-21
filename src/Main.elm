@@ -17,12 +17,13 @@ type alias Model =
     , link : String
     , live_link : String
     , addendum : Bool
+    , isE1 : Bool
     }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( { weight_in_kg = 0, overall = "overall", link = "", live_link = "", addendum = False }, Cmd.none )
+    ( { weight_in_kg = 0, overall = "overall", link = "", live_link = "", addendum = False, isE1 = False }, Cmd.none )
 
 
 
@@ -36,6 +37,7 @@ type Msg
     | Link String
     | LiveLink String
     | Addendum
+    | E1
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -59,6 +61,9 @@ update msg model =
         Addendum ->
             ( { model | addendum = not model.addendum }, Cmd.none )
 
+        E1 ->
+            ( { model | isE1 = not model.isE1 }, Cmd.none )
+
 
 
 ---- VIEW ----
@@ -79,6 +84,17 @@ view model =
         [ h1 [] [ text "Material Take Off Formatter" ]
         , form [ src "/logo.svg" ]
             [ div [ class "my-5 row" ]
+                [ div [ class "col-4" ] [ text "Is E1?" ]
+                , div [ class "col-8" ]
+                    [ label
+                        [ class "form-check-label" ]
+                        [ input [ class "form-check-input mr-6", type_ "checkbox", onClick E1 ] []
+                        , text " is E1?"
+                        ]
+                    , p [] [ small [ class "text-muted" ] [ text "(If it's an E1 quote different pricing applies)" ] ]
+                    ]
+                ]
+            , div [ class "my-5 row" ]
                 [ div [ class "col-4" ] [ text "Is Addendum?" ]
                 , div [ class "col-8" ]
                     [ label
@@ -130,6 +146,15 @@ view model =
         ]
 
 
+e1String : Bool -> String
+e1String isAddendum =
+    if isAddendum then
+        "(E1) "
+
+    else
+        ""
+
+
 addendumString : Bool -> String
 addendumString isAddendum =
     if isAddendum then
@@ -159,7 +184,7 @@ formatResult model =
 
 formatLineItemResult : Model -> String
 formatLineItemResult model =
-    Round.round 2 (kgs_to_tonnes model.weight_in_kg) ++ " tonnes " ++ addendumString model.addendum ++ "(" ++ model.overall ++ ")" ++ ", Link: " ++ model.link 
+    Round.round 2 (kgs_to_tonnes model.weight_in_kg) ++ " tonnes " ++ e1String(model.isE1) ++ addendumString model.addendum ++ "(" ++ model.overall ++ ")" ++ ", Link: " ++ model.link 
 
 
 isValid : Model -> String
