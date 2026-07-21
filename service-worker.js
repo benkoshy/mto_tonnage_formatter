@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/mto_tonnage_formatter/precache-manifest.909788ade49341b0db61eae7b56a418c.js"
+  "/mto_tonnage_formatter/precache-manifest.7a67d2272bd33e12cd4270d7553ec09c.js"
 );
 
 workbox.core.skipWaiting();
